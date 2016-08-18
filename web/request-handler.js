@@ -25,14 +25,17 @@ exports.handleRequest = function (req, res) {
         httpHelpers.headers['Content-Type'] = 'text/css';
         sendResponse(res, data);
       });
-    } else if (archive.isUrlArchived(req.url, function(exists) { return exists; })) {
-      // var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
+    } else if (archive.isUrlArchived(req.url, function(exists) { 
+      // return exists;
       console.log('isArchived works!');
       fs.readFile(path.join(archive.paths.archivedSites, req.url), 'utf8', function(err, data) {
         if (err) { throw err; }
         httpHelpers.headers['Content-Type'] = 'text/html';
         sendResponse(res, data);
-      });
+      }); 
+    })) {
+      // var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
+      
     }
   } else if (req.method === 'POST') {
     console.log('received POST request');
