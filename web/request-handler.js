@@ -39,6 +39,7 @@ exports.handleRequest = function (req, res) {
 
   /////////// POST ////////  
   } else if (req.method === 'POST') {
+    // Note: want to write a conditional for handling extraneous post requests that aren't the url submission
     httpHelpers.collectData(req, function(entry) {
       httpHelpers.handleData(req, res, entry);
     });

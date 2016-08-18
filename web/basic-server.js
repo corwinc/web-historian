@@ -1,6 +1,7 @@
 var http = require('http');
 var handler = require('./request-handler');
 var initialize = require('./initialize.js');
+var HtmlFetcher = require('../workers/htmlfetcher');
 
 // Why do you think we have this here?
 // HINT: It has to do with what's in .gitignore
@@ -17,3 +18,4 @@ if (module.parent) {
   console.log('Listening on http://' + ip + ':' + port);
 }
 
+// setInterval(HtmlFetcher.HtmlFetcher, 2000);

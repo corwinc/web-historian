@@ -62,11 +62,11 @@ exports.isUrlArchived = function(url, callback) {
 };
 
 exports.downloadUrls = function(array) {
-  //console.log(request);
+  console.log('Downloading');
   _.each(array, function(url) {
 
     request('http://' + url, function(err, res, body) {
-      if (err) { throw err; }
+      if (err) { console.log(err); }
       fs.writeFile(exports.paths.archivedSites + '/' + url, body, function(err) {
         console.log(err);
       });
