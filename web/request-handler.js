@@ -41,7 +41,51 @@ exports.handleRequest = function (req, res) {
     }
   } else if (req.method === 'POST') {
     console.log('received POST request');
-    
+    var data = '';
+    req.on('data', function(chunk) {
+      data += chunk;
+    });
+    console.log(data);
+    //if urlisarchived
+      //redirect
+    //else
+      //check list
+      //if yes
+        //redirect to loading
+      //else add to list
+
+    archive.isUrlArchived(req.url, function(exists) {
+      if (exists) {
+        console.log('url is archived');
+        fs.readFile(path.join(archive.paths.archivedSites, req.url), 'utf8', function(err, data) {
+          if (err) { throw err; }
+          httpHelpers.headers['Content-Type'] = 'text/html';
+          sendResponse(res, data);
+        }); 
+      } else {
+        archive.isUrlInList(req.url, function(inList) {
+          if (inList) {
+            console.log('url is not archived but in list');
+            fs.readFile(path.join(__dirname, '/public/loading.html'), 'utf8', function(err, data) {
+              if (err) { throw err; }
+              httpHelpers.headers['Content-Type'] = 'text/html';
+              sendResponse(res, data);
+            });
+          } else {
+            console.log('adding url to list');
+            archive.addUrlToList(req.url, function(err) {
+              console.log('made it');
+            });
+          }
+        });
+      }
+    });
+
+
+
+    // archive.addUrlToList(req.url, function() {
+
+    // })
     // var data = '';
     // req.on('data', function (chunk) {
     //   data += chunk;
