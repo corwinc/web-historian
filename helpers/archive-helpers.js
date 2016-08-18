@@ -52,7 +52,8 @@ exports.isUrlInList = function(url, callback) {
   });
 };
 
-exports.addUrlToList = function() {
+exports.addUrlToList = function(url, callback) {
+  fs.appendFile(exports.paths.list, url + '\n', callback);
 };
 
 exports.isUrlArchived = function(url, callback) {

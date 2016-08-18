@@ -41,6 +41,7 @@ exports.handleRequest = function (req, res) {
     }
   } else if (req.method === 'POST') {
     console.log('received POST request');
+    
     // var data = '';
     // req.on('data', function (chunk) {
     //   data += chunk;
