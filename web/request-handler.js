@@ -11,30 +11,26 @@ var sendResponse = function (res, data, statusCode) {
 };
 
 exports.handleRequest = function (req, res) {
-  console.log(__dirname);
+  console.log(req.url);
   if (req.method === 'GET') {
-    //console.log(req.url);
     if (req.url === '/') {
       fs.readFile(path.join(__dirname, '/public/index.html'), 'utf8', function(err, data) {
-        // if (data) {
         if (err) { throw err; }
-          console.log('data: ', data);
-          httpHelpers.headers['Content-Type'] = 'text/html';
-          sendResponse(res, data);
-        //}
-
-        // if (err) {
-        //   console.log('threw error with get request to /');
-        // }
-
+        httpHelpers.headers['Content-Type'] = 'text/html';
+        sendResponse(res, data);
       });
     } else if (req.url === '/styles.css') {
-      console.log('sent css');
       fs.readFile(path.join(__dirname, '/public/styles.css'), 'utf8', function(err, data) {
-        // if (err) {
-        //   console.log('threw error with get request to /styles.css');
-        // }
+        if (err) { throw err; }
         httpHelpers.headers['Content-Type'] = 'text/css';
+        sendResponse(res, data);
+      });
+    } else if (archive.isUrlArchived(req.url, function(exists) { return exists; })) {
+      // var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
+      console.log('isArchived works!');
+      fs.readFile(path.join(archive.paths.archivedSites, req.url), 'utf8', function(err, data) {
+        if (err) { throw err; }
+        httpHelpers.headers['Content-Type'] = 'text/html';
         sendResponse(res, data);
       });
     }
